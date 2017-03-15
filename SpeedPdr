@@ -1,0 +1,99 @@
+unit Unit3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.Imaging.jpeg, Vcl.ExtCtrls;
+
+type
+  TForm3 = class(TForm)
+    Button2: TButton;
+    BitBtn1: TBitBtn;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Image1: TImage;
+    Label1: TLabel;
+    procedure Label1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit2KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm3.Button2Click(Sender: TObject);
+var
+s, min, sec: integer;
+t, v: real;
+begin
+  if (Length(Edit1.Text)=0) then
+    showmessage('Надо ввести дистанцию')
+    else
+     if (Length(Edit2.Text)=0) then
+      showmessage('Надо ввести время')
+      else begin
+
+
+
+  if((Edit1.Text <> '') and (Edit2.Text <> '')) then begin
+  s := StrToInt(Edit1.Text);            // rasstoyanie
+  t := StrToFloat(Edit2.Text);          // vremya
+
+  min := trunc(t);
+  sec := round((t-min)*100);
+
+  v := (s/1000)/((min*60 + sec)/3600);
+  ShowMessage('Расстояние: '+ Edit1.Text + ' метров' + #13 + 'Время: ' + IntToStr(min) +
+             ' минут, ' + IntToStr(sec) + ' секунд' + #13 + 'Скорость равна ' + FloatToStrF(v, fffixed, 8, 3) + ' км/ч');
+  end
+  else
+    ShowMessage('Вы не ввели одно из значений');
+end;
+     end;
+procedure TForm3.Edit1KeyPress(Sender: TObject; var Key: Char);
+begin
+ case (key) of
+ '0'..'9':;
+ #8:;
+ #13:Edit2.SetFocus;
+  else key:=chr(0);
+  end;
+end;
+
+
+
+
+procedure TForm3.Edit2KeyPress(Sender: TObject; var Key: Char);
+begin
+  case (key) of
+
+
+  #8:;
+  #13:Edit2.SetFocus;
+    '.',',': if key ='.'  then    begin
+          key:=',';
+           if pos(',',Edit2.Text)<>0 then
+            key:=chr(0);
+    end
+      else
+      key:=chr(0);
+  end;
+end;
+
+procedure TForm3.Label1Click(Sender: TObject);
+begin
+ ShowMessage('Введите значения и нажмите на кнопку'+ #13 +'Первое поле - дистанция, второе - время (формат м,с)');
+end;
+
+end.
